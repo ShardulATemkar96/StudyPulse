@@ -18,7 +18,7 @@ if ($method === "POST") {
 
     // Verify attempt belongs to user
     $stmt = $conn->prepare("
-        SELECT ta.attempt_id, ta.test_id, ta.start_time, ta.status, t.duration_minutes, t.total_questions
+        SELECT ta.attempt_id, ta.test_id, ta.start_time, ta.status, t.duration_minutes, t.total_questions, t.title
         FROM test_attempts ta
         JOIN tests t ON ta.test_id = t.test_id
         WHERE ta.attempt_id = ? AND ta.user_id = ?
@@ -90,6 +90,7 @@ if ($method === "POST") {
 
     jsonResponse([
         "attempt_id" => $attemptId,
+        "test_title" => $attempt["title"],
         "status" => $status,
         "total_questions" => $totalQuestions,
         "answered" => $answeredCount,

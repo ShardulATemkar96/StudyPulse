@@ -43,9 +43,9 @@ if ($method === "POST") {
         jsonResponse(["detail" => "Time has expired. Test will be auto-submitted."], 403);
     }
 
-    // Verify question exists
-    $stmt = $conn->prepare("SELECT question_id FROM questions WHERE question_id = ?");
-    $stmt->bind_param("i", $questionId);
+    // Verify question exists and belongs to the attempt's test
+    $stmt = $conn->prepare("SELECT q.question_id FROM questions q JOIN test_attempts ta ON q.test_id = ta.test_id WHERE q.question_id = ? AND ta.attempt_id = ?");
+    $stmt->bind_param("ii", $questionId, $attemptId);
     $stmt->execute();
     $question = $stmt->get_result()->fetch_assoc();
     $stmt->close();
