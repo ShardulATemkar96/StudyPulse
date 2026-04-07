@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# API routing
+RewriteRule ^api/auth/signup$ api/signup.php [L,QSA]
+RewriteRule ^api/auth/login$ api/login.php [L,QSA]
+RewriteRule ^api/auth/me$ api/me.php [L,QSA]
+RewriteRule ^api/units$ api/units.php [L,QSA]
+RewriteRule ^api/units/([0-9]+)$ api/unit_detail.php?id=$1 [L,QSA]
+RewriteRule ^api/dashboard$ api/dashboard.php [L,QSA]
+RewriteRule ^api/analytics$ api/analytics.php [L,QSA]
+RewriteRule ^api/study-sessions$ api/study_sessions.php [L,QSA]
+RewriteRule ^healthz$ api/healthz.php [L,QSA]
