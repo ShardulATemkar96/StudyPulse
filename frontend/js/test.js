@@ -197,8 +197,11 @@
 
         // Update answered count
         var answeredCount = Object.keys(testState.answers).length;
+        var totalCount = testState.questions.length;
         var answeredEl = document.getElementById('test-answered-count');
-        if (answeredEl) answeredEl.textContent = answeredCount + '/' + testState.questions.length;
+        var answeredTopEl = document.getElementById('test-answered-count-top');
+        if (answeredEl) answeredEl.textContent = answeredCount + '/' + totalCount;
+        if (answeredTopEl) answeredTopEl.textContent = answeredCount + '/' + totalCount;
     }
 
     function renderCurrentQuestion() {

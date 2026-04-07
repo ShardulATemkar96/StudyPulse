@@ -624,6 +624,12 @@
     text-align: center;
 }
 
+.test-confirm-icon {
+    font-size: 48px;
+    color: #001944;
+    margin-bottom: 1rem;
+}
+
 .test-confirm-title {
     font-family: 'Manrope', sans-serif;
     font-weight: 800;
