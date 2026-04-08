@@ -132,6 +132,15 @@ function showAppPage(page) {
     if (page === 'dashboard') loadDashboard();
     if (page === 'library') loadLibrary();
     if (page === 'analytics') loadAnalytics();
+    if (page === 'test') loadTestList();
+
+    // Hide test sub-pages when switching away from test
+    if (page !== 'test') {
+        var testInterface = document.getElementById('app-test-interface');
+        var testResult = document.getElementById('app-test-result');
+        if (testInterface) testInterface.classList.add('hidden');
+        if (testResult) testResult.classList.add('hidden');
+    }
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────────────

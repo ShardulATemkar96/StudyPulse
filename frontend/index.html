@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="css/test.css" rel="stylesheet"/>
     <script>
       tailwind.config = {
         darkMode: "class",
@@ -438,7 +439,7 @@
                 <span class="material-symbols-outlined">insights</span>
                 <span class="text-sm tracking-wide">Analytics & Insights</span>
             </a>
-            <a class="side-link flex items-center gap-3 px-4 py-3 text-slate-600 font-medium hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-150 cursor-pointer" data-page="test">
+            <a class="side-link flex items-center gap-3 px-4 py-3 text-slate-600 font-medium hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-150 cursor-pointer" data-page="test" onclick="showAppPage('test')">
                 <span class="material-symbols-outlined">quiz</span>
                 <span class="text-sm tracking-wide">Test</span>
             </a>
@@ -575,7 +576,121 @@
                 </div>
             </div>
         </div>
+        <!-- TEST LIST -->
+        <div id="app-test" class="app-page hidden max-w-6xl mx-auto space-y-8">
+            <header class="space-y-1">
+                <h1 class="text-4xl font-extrabold tracking-tight text-primary font-headline">Online Tests</h1>
+                <p class="text-on-surface-variant font-body">Challenge yourself with timed assessments and track your performance.</p>
+            </header>
+            <div id="test-list-container">
+                <div class="test-loading"><div class="test-spinner"></div><div class="test-loading-text">Loading tests...</div></div>
+            </div>
+        </div>
+
+        <!-- TEST INTERFACE -->
+        <div id="app-test-interface" class="app-page hidden">
+            <div class="test-interface-container">
+                <!-- Question Sidebar -->
+                <div class="test-question-sidebar">
+                    <div class="test-question-sidebar-title">Questions</div>
+                    <div id="test-q-grid" class="test-question-grid"></div>
+                    <div class="test-sidebar-legend">
+                        <div class="test-legend-item"><div class="test-legend-dot current-dot"></div> Current</div>
+                        <div class="test-legend-item"><div class="test-legend-dot answered-dot"></div> Answered</div>
+                        <div class="test-legend-item"><div class="test-legend-dot unanswered-dot"></div> Not Answered</div>
+                    </div>
+                    <div class="test-progress-badge" id="test-answered-count">0/0</div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="test-main-content">
+                    <!-- Timer Bar -->
+                    <div class="test-timer-bar">
+                        <div id="test-timer-container" class="test-timer-display">
+                            <span class="material-symbols-outlined">timer</span>
+                            <span id="test-timer-value">00:00</span>
+                        </div>
+                        <div class="test-progress-info">
+                            <span id="test-answered-count-top" class="test-progress-badge">0/0</span>
+                        </div>
+                    </div>
+
+                    <!-- Question Card -->
+                    <div class="test-question-card">
+                        <span id="test-current-q-difficulty" class="test-difficulty-badge medium">MEDIUM</span>
+                        <div id="test-current-q-number" class="test-question-number">Question 1 of 45</div>
+                        <div id="test-current-q-text" class="test-question-text">Loading question...</div>
+                        <div id="test-current-q-options" class="test-options-list"></div>
+
+                        <!-- Navigation -->
+                        <div class="test-nav-controls">
+                            <div>
+                                <button id="test-prev-btn" class="test-nav-btn" onclick="prevQuestion()" disabled>
+                                    <span class="material-symbols-outlined">chevron_left</span> Previous
+                                </button>
+                                <button id="test-next-btn" class="test-nav-btn" onclick="nextQuestion()">
+                                    Next <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                            <button class="test-submit-btn" onclick="showSubmitConfirm()">
+                                <span class="material-symbols-outlined">send</span> Submit Test
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEST RESULT -->
+        <div id="app-test-result" class="app-page hidden">
+            <div class="test-result-container">
+                <div class="test-result-hero">
+                    <div id="test-result-title" class="test-question-number">Test Result</div>
+                    <div id="test-result-score-value" class="test-result-score">0/0</div>
+                    <div id="test-result-percent-value" class="test-result-percentage">0%</div>
+                    <span id="test-result-status-badge" class="test-result-status passed">
+                        <span class="material-symbols-outlined">check_circle</span> Passed
+                    </span>
+                </div>
+                <div class="test-result-stats">
+                    <div class="test-result-stat-card">
+                        <span id="test-result-correct" class="test-result-stat-value correct">0</span>
+                        <span class="test-result-stat-label">Correct</span>
+                    </div>
+                    <div class="test-result-stat-card">
+                        <span id="test-result-wrong" class="test-result-stat-value wrong">0</span>
+                        <span class="test-result-stat-label">Wrong</span>
+                    </div>
+                    <div class="test-result-stat-card">
+                        <span id="test-result-unanswered" class="test-result-stat-value unanswered">0</span>
+                        <span class="test-result-stat-label">Unanswered</span>
+                    </div>
+                    <div class="test-result-stat-card">
+                        <span id="test-result-total" class="test-result-stat-value">0</span>
+                        <span class="test-result-stat-label">Total Questions</span>
+                    </div>
+                </div>
+                <div class="test-result-actions">
+                    <button class="test-btn-back" onclick="backToTestList()">
+                        <span class="material-symbols-outlined">arrow_back</span> Back to Tests
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <!-- Submit Confirmation Modal -->
+    <div id="test-submit-modal" class="test-confirm-overlay hidden">
+        <div class="test-confirm-modal">
+            <span class="material-symbols-outlined test-confirm-icon">help_outline</span>
+            <div class="test-confirm-title">Submit Test?</div>
+            <div id="test-submit-info" class="test-confirm-text">Are you sure you want to submit?</div>
+            <div class="test-confirm-actions">
+                <button class="test-confirm-cancel" onclick="hideSubmitConfirm()">Cancel</button>
+                <button class="test-confirm-submit" onclick="confirmSubmitTest()">Submit</button>
+            </div>
+        </div>
+    </div>
 
     <!-- FAB -->
     <button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 group z-[60]" onclick="openAddModal()">
@@ -596,6 +711,10 @@
         <a class="mob-link flex flex-col items-center gap-1 cursor-pointer" data-page="analytics" onclick="showAppPage('analytics')">
             <span class="material-symbols-outlined">insights</span>
             <span class="text-[10px] font-medium">Analytics</span>
+        </a>
+        <a class="mob-link flex flex-col items-center gap-1 cursor-pointer" data-page="test" onclick="showAppPage('test')">
+            <span class="material-symbols-outlined">quiz</span>
+            <span class="text-[10px] font-medium">Test</span>
         </a>
     </nav>
 </div>
@@ -661,5 +780,6 @@
 </div>
 
 <script src="app.js"></script>
+<script src="js/test.js"></script>
 </body>
 </html>
