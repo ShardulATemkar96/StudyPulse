@@ -397,6 +397,10 @@
         } catch (err) {
             alert('Failed to submit test: ' + err.message);
             testState.isSubmitting = false;
+            // Restart timer so auto-submit protection is not lost
+            if (testState.currentAttemptId && getRemainingSeconds() > 0) {
+                startTimer();
+            }
         }
     }
 
@@ -418,11 +422,12 @@
             testState.timerInterval = null;
         }
 
-        var testListSection = document.getElementById('app-test');
+        // Hide all app pages first to prevent overlapping UI
+        document.querySelectorAll('.app-page').forEach(function (p) { p.classList.add('hidden'); });
+
         var testInterface = document.getElementById('app-test-interface');
         var testResult = document.getElementById('app-test-result');
 
-        if (testListSection) testListSection.classList.add('hidden');
         if (testInterface) testInterface.classList.add('hidden');
         if (testResult) testResult.classList.remove('hidden');
 
@@ -460,6 +465,14 @@
         testState.questions = [];
         testState.answers = {};
     }
+
+    // Exposed so app.js can stop the timer when user navigates away from test
+    window.stopTestTimer = function () {
+        if (testState.timerInterval) {
+            clearInterval(testState.timerInterval);
+            testState.timerInterval = null;
+        }
+    };
 
     window.backToTestList = function () {
         var testListSection = document.getElementById('app-test');
